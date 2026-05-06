@@ -1,0 +1,16 @@
+{
+  "environments": {
+    "staging": {
+      "baseUrl": "https://jsonplaceholder.typicode.com",
+      "headers": {}
+    },
+    "prod": {
+      "baseUrl": "https://jsonplaceholder.typicode.com",
+      "headers": {}
+    }
+  },
+  "endpoints": [
+    { "method": "GET", "path": "/users/1" },
+    { "method": "GET", "path": "/posts/1" }
+  ]
+}
