@@ -1,11 +1,18 @@
 {
-  "name": "apidrift",
-  "version": "1.0.0",
+  "name": "apidrift-cli",
+  "version": "1.0.1",
   "description": "CLI tool to detect API schema drift across environments",
   "type": "module",
   "bin": {
-    "apidrift": "./bin/apidrift.js"
+    "apidrift": "bin/apidrift.js"
   },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "README.md",
+    ".env.example"
+  ],
   "scripts": {
     "dev": "node bin/apidrift.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
