@@ -1,19 +1,12 @@
- ________  ________  ___  ________  ________  ___  ________ _________
-|\   __  \|\   __  \|\  \|\   ___ \|\   __  \|\  \|\  _____\\___   ___\
-\ \  \|\  \ \  \|\  \ \  \ \  \_|\ \ \  \|\  \ \  \ \  \__/\|___ \  \_|
- \ \   __  \ \   ____\ \  \ \  \ \\ \ \   _  _\ \  \ \   __\    \ \  \
-  \ \  \ \  \ \  \___|\ \  \ \  \_\\ \ \  \\  \\ \  \ \  \_|     \ \  \
-   \ \__\ \__\ \__\    \ \__\ \_______\ \__\\ _\\ \__\ \__\       \ \__\
-    \|__|\|__|\|__|     \|__|\|_______|\|__|\|__|\|__|\|__|        \|__|
+# Apidrift
 
-
-                                                                        
+---
 
 ## What Is This?
 
 **apidrift** is a CLI tool you plug into **any existing project** to monitor your API responses.
 
-It remembers the *shape* of your API responses across versions and environments — and tells you exactly what broke, what changed, and what's undocumented before it reaches production.
+It remembers the _shape_ of your API responses across versions and environments — and tells you exactly what broke, what changed, and what's undocumented before it reaches production.
 
 You bring your API. apidrift does the rest.
 
@@ -78,8 +71,8 @@ This creates an `apidrift.config.json` file in your project folder. Open it and 
     }
   },
   "endpoints": [
-    { "method": "GET",  "path": "/api/users/1" },
-    { "method": "GET",  "path": "/api/orders" }
+    { "method": "GET", "path": "/api/users/1" },
+    { "method": "GET", "path": "/api/orders" }
   ]
 }
 ```
@@ -206,12 +199,12 @@ apidrift never stores your actual data — only the shape (field names + types).
 
 ## Change Classification
 
-| Type | What Happened | Severity |
-|---|---|---|
-| Field removed | A field your consumers depend on is gone | 🔴 Breaking |
-| Type changed | `string → number` silently breaks parsing | 🔴 Breaking |
-| Field added | New undocumented field appeared | 🟡 Additive |
-| No change | Schemas match exactly | 🟢 Clean |
+| Type          | What Happened                             | Severity    |
+| ------------- | ----------------------------------------- | ----------- |
+| Field removed | A field your consumers depend on is gone  | 🔴 Breaking |
+| Type changed  | `string → number` silently breaks parsing | 🔴 Breaking |
+| Field added   | New undocumented field appeared           | 🟡 Additive |
+| No change     | Schemas match exactly                     | 🟢 Clean    |
 
 ---
 
@@ -236,12 +229,12 @@ Snapshots are stored globally at `~/.apidrift/snapshots/` — accessible from an
 
 ## Tech Stack
 
-| Purpose | Package |
-|---|---|
-| CLI framework | commander |
-| HTTP client | axios |
-| Terminal output | chalk + cli-table3 |
-| Spinner | ora |
+| Purpose                 | Package                         |
+| ----------------------- | ------------------------------- |
+| CLI framework           | commander                       |
+| HTTP client             | axios                           |
+| Terminal output         | chalk + cli-table3              |
+| Spinner                 | ora                             |
 | Schema inference + diff | custom engine (no external lib) |
 
 ---
