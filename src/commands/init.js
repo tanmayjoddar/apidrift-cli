@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import chalk from "chalk";
+import prompts from "prompts";
 
 const STARTER = {
   environments: {
@@ -13,22 +14,62 @@ const STARTER = {
       headers: { Authorization: "Bearer ${PROD_TOKEN}" },
     },
   },
-  endpoints: [
-    { method: "GET", path: "/api/users/1" },
-    { method: "GET", path: "/api/orders" },
-  ],
+  endpoints: [],
 };
 
-export function runInit() {
+export async function runInit() {
   const dest = path.resolve(process.cwd(), "apidrift.config.json");
 
   if (fs.existsSync(dest)) {
-    console.log(chalk.yellow("apidrift.config.json already exists"));
-    return;
+    const { overwrite } = await prompts({
+      type: "confirm",
+      name: "overwrite",
+      message: "apidrift.config.json already exists. Overwrite?",
+      initial: false,
+    });
+    if (!overwrite) {
+      return;
+    }
   }
 
-  fs.writeFileSync(dest, JSON.stringify(STARTER, null, 2));
+  const questions = [
+    {
+      type: "text",
+      name: "stagingUrl",
+      message: "What is your staging API base URL?",
+    },
+    {
+      type: "text",
+      name: "prodUrl",
+      message: "What is your production API base URL?",
+    },
+    {
+      type: "text",
+      name: "openapiSpecUrl",
+      message: "Optional: What is the URL of your OpenAPI/Swagger spec?",
+    },
+  ];
+
+  const response = await prompts(questions);
+
+  const config = {
+    environments: {
+      staging: {
+        baseUrl: response.stagingUrl,
+        headers: { Authorization: "Bearer ${STAGING_TOKEN}" },
+      },
+      prod: {
+        baseUrl: response.prodUrl,
+        headers: { Authorization: "Bearer ${PROD_TOKEN}" },
+      },
+    },
+    discovery: {
+      openapi: response.openapiSpecUrl || undefined,
+    },
+    endpoints: [],
+  };
+
+  fs.writeFileSync(dest, JSON.stringify(config, null, 2));
   console.log(chalk.green("✓ Created apidrift.config.json"));
-  console.log("  Edit it to add your environments and endpoints");
-  console.log("  Then run: apidrift snapshot --tag v1.0 --env staging");
+  console.log("  You can now run snapshots against your environments.");
 }
