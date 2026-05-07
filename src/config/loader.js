@@ -8,8 +8,11 @@ export function loadConfig() {
   const configPath = path.resolve(process.cwd(), "apidrift.config.json");
 
   if (!fs.existsSync(configPath)) {
-    console.error("apidrift.config.json not found. Run: apidrift init");
-    process.exit(1);
+    return {
+      environments: {},
+      endpoints: [],
+      discovery: "heuristic",
+    };
   }
 
   const raw = fs.readFileSync(configPath, "utf-8");

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { maskSensitiveData } from "./masker.js";
 
 export async function fetchEndpoint(baseUrl, endpoint, headers = {}) {
   const url = `${baseUrl}${endpoint.path}`;
@@ -11,9 +12,11 @@ export async function fetchEndpoint(baseUrl, endpoint, headers = {}) {
     timeout: 10000,
   });
 
+  const maskedData = maskSensitiveData(response.data);
+
   return {
     status: response.status,
-    data: response.data,
+    data: maskedData,
     endpoint: endpoint.path,
     method: endpoint.method,
   };

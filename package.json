@@ -1,6 +1,6 @@
 {
   "name": "apidrift-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CLI tool to detect API schema drift across environments",
   "type": "module",
   "bin": {
@@ -9,7 +9,6 @@
   "files": [
     "bin/",
     "src/",
-    "README.md",
     "README.md",
     ".env.example"
   ],
@@ -23,7 +22,8 @@
     "cli-table3": "^0.6.3",
     "commander": "^11.0.0",
     "dotenv": "^16.0.0",
-    "ora": "^7.0.1"
+    "ora": "^7.0.1",
+    "prompts": "^2.4.2"
   },
   "devDependencies": {
     "jest": "^29.0.0"
