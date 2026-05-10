@@ -6,11 +6,12 @@ import { runRecord } from "../src/commands/record.js";
 import { runDiff } from "../src/commands/diff.js";
 import { runCheck } from "../src/commands/check.js";
 import { runList } from "../src/commands/list.js";
+import pkg from "../package.json" assert { type: "json" };
 
 program
   .name("apidrift")
   .description("Detect API schema drift across environments")
-  .version("1.0.5");
+  .version(pkg.version);
 
 program
   .command("init")
