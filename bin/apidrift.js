@@ -10,7 +10,7 @@ import { runList } from "../src/commands/list.js";
 program
   .name("apidrift")
   .description("Detect API schema drift across environments")
-  .version("1.0.2");
+  .version("1.0.5");
 
 program
   .command("init")

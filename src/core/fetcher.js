@@ -7,6 +7,8 @@ const RETRY_DEFAULTS = {
   maxDelay: 8000,
 };
 
+let didWarnEmptyAuth = false;
+
 function isRetryable(err) {
   if (!err) return false;
   if (err.code === "ECONNABORTED" || err.code === "ETIMEDOUT") return true;
@@ -20,12 +22,20 @@ function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-async function fetchWithRetry(url, options, attempt = 1, config = RETRY_DEFAULTS) {
+async function fetchWithRetry(
+  url,
+  options,
+  attempt = 1,
+  config = RETRY_DEFAULTS,
+) {
   try {
     return await axios({ ...options, url, timeout: 10000 });
   } catch (err) {
     if (attempt < config.retries && isRetryable(err)) {
-      const delay = Math.min(config.baseDelay * 2 ** (attempt - 1), config.maxDelay);
+      const delay = Math.min(
+        config.baseDelay * 2 ** (attempt - 1),
+        config.maxDelay,
+      );
       await sleep(delay);
       return fetchWithRetry(url, options, attempt + 1, config);
     }
@@ -34,6 +44,7 @@ async function fetchWithRetry(url, options, attempt = 1, config = RETRY_DEFAULTS
 }
 
 export async function fetchEndpoint(baseUrl, endpoint, headers = {}) {
+  warnIfEmptyOrUnresolvedAuth(headers);
   const url = `${baseUrl}${endpoint.path}`;
 
   const response = await fetchWithRetry(url, {
@@ -44,10 +55,35 @@ export async function fetchEndpoint(baseUrl, endpoint, headers = {}) {
 
   const maskedData = maskSensitiveData(response.data);
 
-return {
+  return {
     status: response.status,
     data: maskedData,
     endpoint: endpoint.path,
     method: endpoint.method,
   };
+}
+
+function warnIfEmptyOrUnresolvedAuth(headers) {
+  if (didWarnEmptyAuth) return;
+  if (!headers || typeof headers !== "object") return;
+
+  const authKey = Object.keys(headers).find(
+    (k) => String(k).toLowerCase() === "authorization",
+  );
+  if (!authKey) return;
+
+  const rawValue = headers[authKey];
+  const value =
+    rawValue === undefined || rawValue === null ? "" : String(rawValue);
+  const trimmed = value.trim();
+
+  const looksEmptyBearer = /^bearer\s*$/i.test(trimmed);
+  const looksUnresolved = /\$\{[^}]+\}/.test(value);
+
+  if (!trimmed || looksEmptyBearer || looksUnresolved) {
+    didWarnEmptyAuth = true;
+    console.warn(
+      "Warning: Authorization header looks empty/unresolved. If this API needs auth, ensure your .env provides STAGING_TOKEN/PROD_TOKEN (or set env vars) before running apidrift.",
+    );
+  }
 }

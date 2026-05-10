@@ -79,5 +79,16 @@ export async function runInit() {
 
   fs.writeFileSync(dest, JSON.stringify(config, null, 2));
   console.log(chalk.green("✓ Created apidrift.config.json"));
-  console.log("  You can now run snapshots against your environments.");
+  console.log("");
+  console.log("  Next steps:");
+  console.log(`  1. Create a ${chalk.cyan(".env")} file in this directory:`);
+  console.log(`     ${chalk.gray("STAGING_TOKEN=your_token_here")}`);
+  console.log(`     ${chalk.gray("PROD_TOKEN=your_token_here")}`);
+  console.log(
+    `  2. Add ${chalk.cyan(".env")} to your ${chalk.cyan(".gitignore")}`,
+  );
+  console.log(
+    `  3. Run: ${chalk.cyan("apidrift snapshot --tag v1.0 --env staging")}`,
+  );
+  console.log("");
 }
