@@ -37,11 +37,19 @@ export async function runInit() {
       type: "text",
       name: "stagingUrl",
       message: "What is your staging API base URL?",
+      validate: (value) =>
+        value.trim().startsWith("http")
+          ? true
+          : "Must be a valid URL starting with http",
     },
     {
       type: "text",
       name: "prodUrl",
       message: "What is your production API base URL?",
+      validate: (value) =>
+        value.trim().startsWith("http")
+          ? true
+          : "Must be a valid URL starting with http",
     },
     {
       type: "text",
