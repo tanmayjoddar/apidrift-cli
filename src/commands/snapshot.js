@@ -50,7 +50,7 @@ export async function runSnapshot(url, { tag, env, methods, dryRun, delay }) {
       spinner.stop();
       renderSnapshotSuccess(tag, "url", 1);
     } catch (err) {
-      spinner.fail(`Failed: ${err.message}`);
+      spinner.fail(`Failed after 3 retries: ${err.message}`);
       process.exit(1);
     }
     return;
@@ -115,7 +115,7 @@ export async function runSnapshot(url, { tag, env, methods, dryRun, delay }) {
         environment.headers,
       );
       const schema = inferSchema(response.data);
-results.push({
+      results.push({
         endpoint: canonicalizePathname(endpoint.path),
         method: endpoint.method,
         schema,
@@ -126,7 +126,7 @@ results.push({
       }
     } catch (err) {
       spinner.fail(
-        `Failed: ${endpoint.method} ${endpoint.path} — ${err.message}`,
+        `Failed after 3 retries: ${endpoint.method} ${endpoint.path} — ${err.message}`,
       );
       process.exit(1);
     }
