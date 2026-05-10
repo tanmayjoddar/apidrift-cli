@@ -6,6 +6,7 @@ import { inferSchema } from "../core/inferSchema.js";
 import { diffSchemas } from "../core/differ.js";
 import { classifyChanges, summarize } from "../core/classifier.js";
 import { renderDiffReport } from "../ui/renderer.js";
+import { canonicalizePathname } from "../utils/canonicalize.js";
 
 function getDiscoverySettings(config) {
   const discovery = config?.discovery;
@@ -84,7 +85,7 @@ export async function runCheck({ envA, envB, methods, dryRun, delay }) {
     const rawChanges = diffSchemas(schemaA, schemaB);
     const changes = classifyChanges(rawChanges);
 
-    report.push({ endpoint: endpoint.path, method: endpoint.method, changes });
+    report.push({ endpoint: canonicalizePathname(endpoint.path), method: endpoint.method, changes });
 
     if (delayMs > 0 && i < endpoints.length - 1) {
       await sleep(delayMs);

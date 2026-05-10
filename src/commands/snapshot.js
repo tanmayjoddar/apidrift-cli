@@ -5,6 +5,7 @@ import { fetchEndpoint } from "../core/fetcher.js";
 import { inferSchema } from "../core/inferSchema.js";
 import { saveSnapshot } from "../storage/snapshotStore.js";
 import { renderSnapshotSuccess } from "../ui/renderer.js";
+import { canonicalizePathname } from "../utils/canonicalize.js";
 
 function getDiscoverySettings(config) {
   const discovery = config?.discovery;
@@ -38,11 +39,12 @@ export async function runSnapshot(url, { tag, env, methods, dryRun, delay }) {
     try {
       const response = await fetchEndpoint(url, { path: "", method: "GET" });
       const schema = inferSchema(response.data);
+      const canonicalizedUrl = canonicalizePathname(new URL(url).pathname);
       const snapshot = {
         tag,
         env: "url",
         createdAt: new Date().toISOString(),
-        endpoints: [{ endpoint: url, method: "GET", schema }],
+        endpoints: [{ endpoint: canonicalizedUrl, method: "GET", schema }],
       };
       saveSnapshot(tag, snapshot);
       spinner.stop();
@@ -113,8 +115,8 @@ export async function runSnapshot(url, { tag, env, methods, dryRun, delay }) {
         environment.headers,
       );
       const schema = inferSchema(response.data);
-      results.push({
-        endpoint: endpoint.path,
+results.push({
+        endpoint: canonicalizePathname(endpoint.path),
         method: endpoint.method,
         schema,
       });

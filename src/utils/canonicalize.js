@@ -3,7 +3,7 @@ const UUID_SEGMENT =
 const NUMERIC_SEGMENT = /^\d+$/;
 const HIGH_ENTROPY_SEGMENT = /^(?=.{12,}$)(?=.*[a-z])(?=.*\d)[a-z0-9_-]+$/i;
 
-function canonicalizePathname(pathname) {
+export export function canonicalizePathname(pathname) {
   const rawSegments = String(pathname || "/")
     .split("/")
     .filter(Boolean);

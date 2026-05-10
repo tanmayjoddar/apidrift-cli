@@ -1,16 +1,18 @@
 {
   "environments": {
     "staging": {
-      "baseUrl": "https://jsonplaceholder.typicode.com",
-      "headers": {}
+      "baseUrl": "",
+      "headers": {
+        "Authorization": "Bearer ${STAGING_TOKEN}"
+      }
     },
     "prod": {
-      "baseUrl": "https://jsonplaceholder.typicode.com",
-      "headers": {}
+      "baseUrl": "",
+      "headers": {
+        "Authorization": "Bearer ${PROD_TOKEN}"
+      }
     }
   },
-  "endpoints": [
-    { "method": "GET", "path": "/users/1" },
-    { "method": "GET", "path": "/posts/1" }
-  ]
+  "discovery": {},
+  "endpoints": []
 }
