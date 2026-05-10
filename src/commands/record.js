@@ -79,7 +79,16 @@ export async function runRecord({ tag, stdin, har }) {
 
 async function readInput({ stdin, har }) {
   if (har) {
-    return fs.readFileSync(har, "utf-8");
+    if (!fs.existsSync(har)) {
+      console.error(`Error: HAR file not found: ${har}`);
+      process.exit(1);
+    }
+    try {
+      return fs.readFileSync(har, "utf-8");
+    } catch (err) {
+      console.error(`Error reading HAR file: ${err.message}`);
+      process.exit(1);
+    }
   }
 
   if (stdin || !process.stdin.isTTY) {
