@@ -3,9 +3,21 @@ import { loadConfig } from "../config/loader.js";
 import { discoverEndpoints } from "../discovery/index.js";
 import { fetchEndpoint } from "../core/fetcher.js";
 import { inferSchema } from "../core/inferSchema.js";
+import { mergeSchema } from "../core/mergeSchema.js";
 import { saveSnapshot } from "../storage/snapshotStore.js";
 import { renderSnapshotSuccess } from "../ui/renderer.js";
 import { canonicalizePathname } from "../utils/canonicalize.js";
+
+function inferSchemaFromResponse(data) {
+  if (Array.isArray(data) && data.length > 0) {
+    let merged = inferSchema(data[0]);
+    for (let i = 1; i < data.length; i++) {
+      merged = mergeSchema(merged, inferSchema(data[i]));
+    }
+    return [merged];
+  }
+  return inferSchema(data);
+}
 
 function getDiscoverySettings(config) {
   const discovery = config?.discovery;
@@ -38,7 +50,7 @@ export async function runSnapshot(url, { tag, env, methods, dryRun, delay }) {
     const spinner = ora(`Snapshotting URL: ${url}...`).start();
     try {
       const response = await fetchEndpoint(url, { path: "", method: "GET" });
-      const schema = inferSchema(response.data);
+      const schema = inferSchemaFromResponse(response.data);
       const canonicalizedUrl = canonicalizePathname(new URL(url).pathname);
       const snapshot = {
         tag,
@@ -114,7 +126,7 @@ export async function runSnapshot(url, { tag, env, methods, dryRun, delay }) {
         endpoint,
         environment.headers,
       );
-      const schema = inferSchema(response.data);
+      const schema = inferSchemaFromResponse(response.data);
       results.push({
         endpoint: canonicalizePathname(endpoint.path),
         method: endpoint.method,

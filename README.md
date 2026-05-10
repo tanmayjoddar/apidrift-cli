@@ -135,16 +135,22 @@ Or snapshot a single URL directly:
 apidrift snapshot https://api.yourapi.com/users/1 --tag prod-users
 ```
 
-Preview what would be snapshotted without making requests:
+Snapshot only specific methods:
 
 ```bash
-apidrift snapshot --tag v1.0 --env staging --dry-run
+apidrift snapshot --tag v1.0 --env staging --methods GET,POST
 ```
 
 Add a delay between requests (polite to APIs):
 
 ```bash
 apidrift snapshot --tag v1.0 --env staging --delay 200
+```
+
+Preview what would be snapshotted without making requests:
+
+```bash
+apidrift snapshot --tag v1.0 --env staging --dry-run
 ```
 
 ---
@@ -155,6 +161,18 @@ Hit two environments right now and diff them on the fly:
 
 ```bash
 apidrift check --envA staging --envB prod
+```
+
+Check specific methods only:
+
+```bash
+apidrift check --envA staging --envB prod --methods GET,POST
+```
+
+Add a delay between checks:
+
+```bash
+apidrift check --envA staging --envB prod --delay 300
 ```
 
 With dry-run to preview which endpoints would be checked:
@@ -299,12 +317,16 @@ Snapshots are stored globally at `~/.apidrift/snapshots/` — accessible from an
 ## All Commands Reference
 
 ```
-apidrift init                                  Interactive setup, creates apidrift.config.json
-apidrift snapshot [url] --tag <t> --env <e>    Snapshot endpoints or a single URL
-apidrift diff <from> <to> [--force]            Diff two snapshots or two live URLs
-apidrift check --envA <a> --envB <b>           Live diff two environments
-apidrift list                                  List all saved snapshots
-apidrift record --tag <t> [--stdin|--har <f>]  Build snapshot from recorded traffic
+apidrift init                                             Interactive setup, creates apidrift.config.json
+apidrift snapshot [url] --tag <t> [--env <e>]             Snapshot endpoints or a single URL
+                      [--methods <m>] [--dry-run]
+                      [--delay <ms>]
+apidrift diff <from> <to> [--force]                       Diff two snapshots or two live URLs
+apidrift check --envA <a> --envB <b>                      Live diff two environments
+                [--methods <m>] [--dry-run]
+                [--delay <ms>]
+apidrift list                                             List all saved snapshots
+apidrift record --tag <t> [--stdin] [--har <file>]        Build snapshot from recorded traffic
 ```
 
 ---
