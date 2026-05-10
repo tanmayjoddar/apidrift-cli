@@ -110,15 +110,22 @@ Walks you through setup interactively and creates `apidrift.config.json`:
       "headers": { "Authorization": "Bearer ${PROD_TOKEN}" }
     }
   },
-  "endpoints": [
-    { "method": "GET", "path": "/api/users/1" },
-    { "method": "GET", "path": "/api/orders" },
-    { "method": "POST", "path": "/api/orders", "body": { "item": "test" } }
-  ]
+  "discovery": {
+    "openapi": "https://api.yourapi.com/openapi.json"
+  },
+  "endpoints": []
 }
 ```
 
-Tokens live in `.env`. Never hardcoded.
+After `init`, create a `.env` file (or set env vars) so `${STAGING_TOKEN}` / `${PROD_TOKEN}` resolve:
+
+```bash
+STAGING_TOKEN=your_token_here
+PROD_TOKEN=your_token_here
+```
+
+- Add `.env` to `.gitignore`.
+- If your `Authorization` header resolves empty (e.g. token missing), apidrift prints a warning before making requests.
 
 ---
 
