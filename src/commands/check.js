@@ -76,18 +76,21 @@ export async function runCheck({ envA, envB, methods, dryRun, delay }) {
   for (let i = 0; i < endpoints.length; i++) {
     const endpoint = endpoints[i];
 
-    let resA, resB;
-    try {
-      [resA, resB] = await Promise.all([
-        fetchEndpoint(configA.baseUrl, endpoint, configA.headers),
-        fetchEndpoint(configB.baseUrl, endpoint, configB.headers),
-      ]);
-    } catch (err) {
-      console.error(
-        `  Skipped ${endpoint.method} ${endpoint.path} after 3 retries: ${err.message}`,
-      );
+    const [resultA, resultB] = await Promise.allSettled([
+      fetchEndpoint(configA.baseUrl, endpoint, configA.headers),
+      fetchEndpoint(configB.baseUrl, endpoint, configB.headers),
+    ]);
+
+    if (resultA.status === "rejected" || resultB.status === "rejected") {
+      const reason = resultA.status === "rejected"
+        ? resultA.reason.message
+        : resultB.reason.message;
+      console.error(`  Skipped ${endpoint.method} ${endpoint.path}: ${reason}`);
       continue;
     }
+
+    const resA = resultA.value;
+    const resB = resultB.value;
 
     const schemaA = inferSchema(resA.data);
     const schemaB = inferSchema(resB.data);
