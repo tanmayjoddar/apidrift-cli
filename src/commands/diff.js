@@ -29,16 +29,22 @@ export async function runDiff(from, to, options = {}) {
       process.exit(1);
     }
 
-    let schemaA, schemaB;
-    try {
-      [schemaA, schemaB] = await Promise.all([
-        fetchAndInfer(from),
-        fetchAndInfer(to),
-      ]);
-    } catch (err) {
-      console.error(`Error after 3 retries: ${err.message}`);
+    const [resultA, resultB] = await Promise.allSettled([
+      fetchAndInfer(from),
+      fetchAndInfer(to),
+    ]);
+
+    if (resultA.status === "rejected") {
+      console.error(`Error fetching ${from}: ${resultA.reason.message}`);
       process.exit(1);
     }
+    if (resultB.status === "rejected") {
+      console.error(`Error fetching ${to}: ${resultB.reason.message}`);
+      process.exit(1);
+    }
+
+    const schemaA = resultA.value;
+    const schemaB = resultB.value;
     const rawChanges = diffSchemas(schemaA, schemaB);
     const changes = classifyChanges(rawChanges);
     const summary = summarize(changes);
