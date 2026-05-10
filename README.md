@@ -30,7 +30,7 @@ Your API changed. Nobody noticed. A field was renamed. A type flipped from `stri
 
 ## What It Does
 
-apidrift snapshots the *shape* of your live API responses — not the data, just the structure — and diffs them across versions, environments, or deploys.
+apidrift snapshots the _shape_ of your live API responses — not the data, just the structure — and diffs them across versions, environments, or deploys.
 
 ```bash
 # One line. No config. No setup.
@@ -112,7 +112,8 @@ Walks you through setup interactively and creates `apidrift.config.json`:
   },
   "endpoints": [
     { "method": "GET", "path": "/api/users/1" },
-    { "method": "GET", "path": "/api/orders" }
+    { "method": "GET", "path": "/api/orders" },
+    { "method": "POST", "path": "/api/orders", "body": { "item": "test" } }
   ]
 }
 ```
@@ -291,12 +292,12 @@ apidrift **never stores your actual data** — only the shape (field names + typ
 
 ## Change Classification
 
-| Change | What It Means | Severity |
-|---|---|---|
-| Field removed | A field consumers depend on is gone | 🔴 Breaking |
-| Type changed | `string → number` silently breaks clients | 🔴 Breaking |
-| Field added | New undocumented field appeared | 🟡 Additive |
-| No change | Schemas match exactly | 🟢 Clean |
+| Change        | What It Means                             | Severity    |
+| ------------- | ----------------------------------------- | ----------- |
+| Field removed | A field consumers depend on is gone       | 🔴 Breaking |
+| Type changed  | `string → number` silently breaks clients | 🔴 Breaking |
+| Field added   | New undocumented field appeared           | 🟡 Additive |
+| No change     | Schemas match exactly                     | 🟢 Clean    |
 
 ---
 
@@ -316,30 +317,104 @@ Snapshots are stored globally at `~/.apidrift/snapshots/` — accessible from an
 
 ## All Commands Reference
 
+### `apidrift init`
+
+Create a starter `apidrift.config.json` in current directory.
+
 ```
-apidrift init                                             Interactive setup, creates apidrift.config.json
-apidrift snapshot [url] --tag <t> [--env <e>]             Snapshot endpoints or a single URL
-                      [--methods <m>] [--dry-run]
-                      [--delay <ms>]
-apidrift diff <from> <to> [--force]                       Diff two snapshots or two live URLs
-apidrift check --envA <a> --envB <b>                      Live diff two environments
-                [--methods <m>] [--dry-run]
-                [--delay <ms>]
-apidrift list                                             List all saved snapshots
-apidrift record --tag <t> [--stdin] [--har <file>]        Build snapshot from recorded traffic
+apidrift init [options]
+
+Options:
+  -h, --help  display help for command
 ```
 
----
+### `apidrift snapshot`
+
+Snapshot all endpoints for an environment or a single URL.
+
+```
+apidrift snapshot [options] [url]
+
+Arguments:
+  url                  The URL to snapshot
+
+Options:
+  --tag <tag>          Version tag e.g. v1.0
+  --env <env>          Environment name e.g. staging
+  --methods <methods>  Comma-separated HTTP methods to allow during
+                       discovery/fetch (default: GET)
+  --dry-run            Print endpoints that would be called (no requests)
+  --delay <ms>         Delay in ms between endpoint requests (default: "0")
+  -h, --help           display help for command
+```
+
+### `apidrift diff`
+
+Diff two snapshots by tag or two URLs.
+
+```
+apidrift diff [options] <from> <to>
+
+Arguments:
+  from        Base snapshot tag or URL
+  to          Target snapshot tag or URL
+
+Options:
+  --force     Force comparison of different endpoints
+  -h, --help  display help for command
+```
+
+### `apidrift check`
+
+Live diff two environments right now.
+
+```
+apidrift check [options]
+
+Options:
+  --envA <envA>        First environment
+  --envB <envB>        Second environment
+  --methods <methods>  Comma-separated HTTP methods to allow during
+                       discovery/fetch (default: GET)
+  --dry-run            Print endpoints that would be called (no requests)
+  --delay <ms>         Delay in ms between endpoint checks (default: "0")
+  -h, --help           display help for command
+```
+
+### `apidrift list`
+
+List all saved snapshots.
+
+```
+apidrift list [options]
+
+Options:
+  -h, --help  display help for command
+```
+
+### `apidrift record`
+
+Create a snapshot from recorded traffic (stdin or HAR).
+
+```
+apidrift record [options]
+
+Options:
+  --tag <tag>   Version tag e.g. nightly
+  --stdin       Read input from stdin (supports HAR JSON or JSON lines)
+  --har <file>  Read a HAR file from disk
+  -h, --help    display help for command
+```
 
 ## Tech Stack
 
-| Layer | Package |
-|---|---|
-| CLI | commander |
-| HTTP | axios |
-| Terminal UI | chalk + cli-table3 + ora |
+| Layer         | Package                    |
+| ------------- | -------------------------- |
+| CLI           | commander                  |
+| HTTP          | axios                      |
+| Terminal UI   | chalk + cli-table3 + ora   |
 | Schema engine | custom (zero dependencies) |
-| Diff engine | custom recursive differ |
+| Diff engine   | custom recursive differ    |
 
 ---
 
