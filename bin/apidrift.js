@@ -1,12 +1,16 @@
 #!/usr/bin/env node
+import { createRequire } from "module";
 import { program } from "commander";
+
 import { runInit } from "../src/commands/init.js";
 import { runSnapshot } from "../src/commands/snapshot.js";
 import { runRecord } from "../src/commands/record.js";
 import { runDiff } from "../src/commands/diff.js";
 import { runCheck } from "../src/commands/check.js";
 import { runList } from "../src/commands/list.js";
-import pkg from "../package.json" assert { type: "json" };
+
+const require = createRequire(import.meta.url);
+const pkg = require("../package.json");
 
 program
   .name("apidrift")
