@@ -10,6 +10,7 @@
 > **Catch API schema drift before your users do.**
 
 [![npm](https://img.shields.io/npm/v/apidrift-cli)](https://www.npmjs.com/package/apidrift-cli)
+[![npm downloads](https://img.shields.io/npm/dw/apidrift-cli)](https://www.npmjs.com/package/apidrift-cli)
 [![license](https://img.shields.io/npm/l/apidrift-cli)](./LICENSE)
 
 ---
