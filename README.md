@@ -428,4 +428,4 @@ Options:
 
 ## License
 
-MIT — built by [Tanmay Joddar](https://github.com/tanmayjoddar)
+MIT License — see [LICENSE](./LICENSE). Built by [Tanmay Joddar](https://github.com/tanmayjoddar)
