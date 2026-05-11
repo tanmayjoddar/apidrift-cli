@@ -1,6 +1,6 @@
 {
   "name": "apidrift-cli",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "CLI tool to detect API schema drift across environments",
   "license": "MIT",
   "type": "module",
