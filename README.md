@@ -426,6 +426,13 @@ Options:
 
 ---
 
+## Contributing
+
+Contributions are welcome.
+
+- See [CONTRIBUTING.md](./CONTRIBUTING.md) for setup, tests, and PR guidelines.
+- Use the GitHub issue template and PR template when opening requests.
+
 ## License
 
 MIT License — see [LICENSE](./LICENSE). Built by [Tanmay Joddar](https://github.com/tanmayjoddar)
