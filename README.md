@@ -11,7 +11,7 @@
 
 [![npm](https://img.shields.io/npm/v/apidrift-cli)](https://www.npmjs.com/package/apidrift-cli)
 [![npm downloads](https://img.shields.io/npm/dw/apidrift-cli)](https://www.npmjs.com/package/apidrift-cli)
-[![license](https://img.shields.io/github/license/tanmayjoddar/apidrift)](https://github.com/tanmayjoddar/apidrift/blob/main/LICENSE)
+[![license](https://img.shields.io/github/license/tanmayjoddar/apidrift-cli)](https://github.com/tanmayjoddar/apidrift-cli/blob/main/LICENSE)
 
 ---
 
