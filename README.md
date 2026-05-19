@@ -325,6 +325,30 @@ apidrift **never stores your actual data** — only the shape (field names + typ
 
 ---
 
+## Troubleshooting
+
+### Authorization header looks empty or unresolved
+
+If apidrift warns that your `Authorization` header looks empty/unresolved, `${STAGING_TOKEN}` or `${PROD_TOKEN}` likely resolved to an empty value before the request was sent. Check that your token names match the placeholders in `apidrift.config.json`.
+
+For bash/zsh:
+
+```bash
+export STAGING_TOKEN="your_token_here"
+export PROD_TOKEN="your_token_here"
+```
+
+For PowerShell:
+
+```powershell
+$env:STAGING_TOKEN = "your_token_here"
+$env:PROD_TOKEN = "your_token_here"
+```
+
+You can also place the variables in a `.env` file in the same directory where you run `apidrift`; this is usually the project root that contains `apidrift.config.json`. Keep `.env` out of git so real tokens are not committed.
+
+---
+
 ## Snapshot Storage
 
 Snapshots are stored globally at `~/.apidrift/snapshots/` — accessible from any project on your machine.
