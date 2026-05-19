@@ -1,11 +1,19 @@
 ---
-name: Issue
-about: Report a bug or propose an improvement
+name: Bug report
+about: Report a bug in apidrift
+labels: [bug]
 ---
+
+## Type
+
+- [ ] Bug
+- [ ] Feature Request
+- [ ] Documentation
+- [ ] Performance
 
 ## Summary
 
-A clear, concise description of the problem or request.
+A clear, concise description of the problem.
 
 ## Expected Behavior
 
@@ -20,6 +28,14 @@ What actually happened (include error output if any).
 1.
 2.
 3.
+
+## Reproduction Repo / Endpoint
+
+If applicable, provide:
+
+- sample API endpoint
+- public repro repo
+- sample JSON response (redacted)
 
 ## Environment
 

@@ -13,6 +13,12 @@
 [![npm downloads](https://img.shields.io/npm/dw/apidrift-cli)](https://www.npmjs.com/package/apidrift-cli)
 [![license](https://img.shields.io/github/license/tanmayjoddar/apidrift-cli)](https://github.com/tanmayjoddar/apidrift-cli/blob/main/LICENSE)
 
+## Contributing
+
+Contributions are welcome.
+
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening issues or pull requests.
+
 ---
 
 ## The Problem
@@ -425,13 +431,6 @@ Options:
 | Diff engine   | custom recursive differ    |
 
 ---
-
-## Contributing
-
-Contributions are welcome.
-
-- See [CONTRIBUTING.md](./CONTRIBUTING.md) for setup, tests, and PR guidelines.
-- Use the GitHub issue template and PR template when opening requests.
 
 ## License
 

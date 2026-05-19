@@ -18,6 +18,36 @@ Run the CLI locally:
 
 - `node bin/apidrift.js --help`
 
+## Project Structure
+
+```
+src/
+	commands/     CLI commands
+	core/         schema inference + diff engine
+	discovery/    OpenAPI / GraphQL / heuristic discovery
+	storage/      snapshot persistence
+	ui/           terminal rendering
+```
+
+## Good First Issues
+
+Look for issues labeled:
+
+- good first issue
+- docs
+- help wanted
+
+## Manual Testing
+
+Run against two live endpoints:
+
+```bash
+node bin/apidrift.js diff \
+https://jsonplaceholder.typicode.com/users/1 \
+https://jsonplaceholder.typicode.com/posts/1 \
+--force
+```
+
 ## What To Work On
 
 - Bug fixes (with a minimal reproducible example)
