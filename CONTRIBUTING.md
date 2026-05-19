@@ -38,6 +38,14 @@ Look for issues labeled:
 - help wanted
 - gssoc
 
+## Issue Assignment
+
+Please comment on an issue before starting work.
+
+Maintainers may assign issues to avoid duplicate work and conflicting pull requests.
+
+Unassigned PRs may be closed if the issue is already being worked on.
+
 ## Manual Testing
 
 Run against two live endpoints:
