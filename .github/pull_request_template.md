@@ -2,6 +2,10 @@
 
 Describe what this PR changes and why.
 
+## Issue Link
+
+Fixes #<issue-number>
+
 ## Type of Change
 
 - [ ] Bug fix
