@@ -19,6 +19,8 @@ Contributions are welcome.
 
 Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening issues or pull requests.
 
+If you find this project useful, please consider starring the repo — it helps a lot.
+
 ---
 
 ## The Problem
