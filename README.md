@@ -129,10 +129,12 @@ After `init`, create a `.env` file (or set env vars) so `${STAGING_TOKEN}` / `${
 ```bash
 STAGING_TOKEN=your_token_here
 PROD_TOKEN=your_token_here
+APIDRIFT_HTTP_TIMEOUT_MS=10000
 ```
 
 - Add `.env` to `.gitignore`.
 - If your `Authorization` header resolves empty (e.g. token missing), apidrift prints a warning before making requests.
+- Set `APIDRIFT_HTTP_TIMEOUT_MS` to a positive integer to override the default 10 second HTTP timeout.
 
 ---
 

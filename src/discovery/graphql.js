@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getHttpTimeoutMs } from "../utils/httpTimeout.js";
 
 const INTROSPECTION_QUERY = {
   query: `{ __schema { queryType { fields { name } } mutationType { fields { name } } } }`,
@@ -10,7 +11,7 @@ export async function discoverGraphQL(baseUrl, headers = {}) {
     url: baseUrl,
     headers: { "Content-Type": "application/json", ...headers },
     data: INTROSPECTION_QUERY,
-    timeout: 10000,
+    timeout: getHttpTimeoutMs(),
   });
 
   const schema = resp.data?.data?.__schema;

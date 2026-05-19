@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getHttpTimeoutMs } from "../utils/httpTimeout.js";
 
 export async function discoverOpenAPI(
   specUrl,
@@ -9,7 +10,7 @@ export async function discoverOpenAPI(
     method: "GET",
     url: specUrl,
     headers,
-    timeout: 10000,
+    timeout: getHttpTimeoutMs(),
   });
   const spec = resp.data;
 

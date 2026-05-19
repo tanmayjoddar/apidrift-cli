@@ -1,5 +1,6 @@
 import axios from "axios";
 import { maskSensitiveData } from "./masker.js";
+import { getHttpTimeoutMs } from "../utils/httpTimeout.js";
 
 const RETRY_DEFAULTS = {
   retries: 3,
@@ -29,7 +30,7 @@ async function fetchWithRetry(
   config = RETRY_DEFAULTS,
 ) {
   try {
-    return await axios({ ...options, url, timeout: 10000 });
+    return await axios({ ...options, url, timeout: getHttpTimeoutMs() });
   } catch (err) {
     if (attempt < config.retries && isRetryable(err)) {
       const delay = Math.min(
