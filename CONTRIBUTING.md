@@ -36,6 +36,7 @@ Look for issues labeled:
 - good first issue
 - docs
 - help wanted
+- gssoc
 
 ## Manual Testing
 
