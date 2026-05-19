@@ -17,6 +17,21 @@ const STARTER = {
   endpoints: [],
 };
 
+function printNextSteps() {
+  console.log("");
+  console.log("  Next steps:");
+  console.log(`  1. Create a ${chalk.cyan(".env")} file in this directory:`);
+  console.log(`     ${chalk.gray("STAGING_TOKEN=your_token_here")}`);
+  console.log(`     ${chalk.gray("PROD_TOKEN=your_token_here")}`);
+  console.log(
+    `  2. Add ${chalk.cyan(".env")} to your ${chalk.cyan(".gitignore")}`,
+  );
+  console.log(
+    `  3. Run: ${chalk.cyan("apidrift snapshot --tag v1.0 --env staging")}`,
+  );
+  console.log("");
+}
+
 export async function runInit() {
   const dest = path.resolve(process.cwd(), "apidrift.config.json");
 
@@ -28,6 +43,8 @@ export async function runInit() {
       initial: false,
     });
     if (!overwrite) {
+      console.log(chalk.yellow("Keeping existing apidrift.config.json"));
+      printNextSteps();
       return;
     }
   }
@@ -79,16 +96,5 @@ export async function runInit() {
 
   fs.writeFileSync(dest, JSON.stringify(config, null, 2));
   console.log(chalk.green("✓ Created apidrift.config.json"));
-  console.log("");
-  console.log("  Next steps:");
-  console.log(`  1. Create a ${chalk.cyan(".env")} file in this directory:`);
-  console.log(`     ${chalk.gray("STAGING_TOKEN=your_token_here")}`);
-  console.log(`     ${chalk.gray("PROD_TOKEN=your_token_here")}`);
-  console.log(
-    `  2. Add ${chalk.cyan(".env")} to your ${chalk.cyan(".gitignore")}`,
-  );
-  console.log(
-    `  3. Run: ${chalk.cyan("apidrift snapshot --tag v1.0 --env staging")}`,
-  );
-  console.log("");
+  printNextSteps();
 }
