@@ -7,14 +7,27 @@ const SNAP_DIR = path.join(os.homedir(), ".apidrift", "snapshots");
 
 if (!fs.existsSync(SNAP_DIR)) fs.mkdirSync(SNAP_DIR, { recursive: true });
 
+export function sanitizeSnapshotTag(tag) {
+  const safeTag = String(tag)
+    .replace(/[^A-Za-z0-9._-]+/g, "_")
+    .replace(/\.{2,}/g, "_")
+    .replace(/^[._-]+|[._-]+$/g, "");
+
+  return safeTag || "snapshot";
+}
+
+function snapshotPath(tag) {
+  return path.join(SNAP_DIR, `${sanitizeSnapshotTag(tag)}.json`);
+}
+
 export function saveSnapshot(tag, data) {
-  const file = path.join(SNAP_DIR, `${tag}.json`);
+  const file = snapshotPath(tag);
   fs.writeFileSync(file, JSON.stringify(data, null, 2));
   return file;
 }
 
 export function loadSnapshot(tag) {
-  const file = path.join(SNAP_DIR, `${tag}.json`);
+  const file = snapshotPath(tag);
   if (!fs.existsSync(file)) {
     console.error(`Snapshot "${tag}" not found. Run: apidrift list`);
     process.exit(1);
