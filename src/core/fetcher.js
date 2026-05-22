@@ -7,6 +7,19 @@ const RETRY_DEFAULTS = {
   maxDelay: 8000,
 };
 
+/**
+ * HTTP request timeout in milliseconds.
+ * Override via the APIDRIFT_TIMEOUT_MS environment variable.
+ * Defaults to 10000 (10 seconds) if unset or if the value is not a positive integer.
+ */
+const DEFAULT_TIMEOUT_MS = 10000;
+const TIMEOUT_MS = (() => {
+  const raw = process.env.APIDRIFT_TIMEOUT_MS;
+  if (!raw) return DEFAULT_TIMEOUT_MS;
+  const parsed = Number(raw);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : DEFAULT_TIMEOUT_MS;
+})();
+
 let didWarnEmptyAuth = false;
 
 function isRetryable(err) {
@@ -29,7 +42,7 @@ async function fetchWithRetry(
   config = RETRY_DEFAULTS,
 ) {
   try {
-    return await axios({ ...options, url, timeout: 10000 });
+    return await axios({ ...options, url, timeout: TIMEOUT_MS });
   } catch (err) {
     if (attempt < config.retries && isRetryable(err)) {
       const delay = Math.min(

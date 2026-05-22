@@ -432,6 +432,59 @@ Options:
 | Schema engine | custom (zero dependencies) |
 | Diff engine   | custom recursive differ    |
 
+## Environment Variables
+
+| Variable | Default | Description |
+| -------- | ------- | ----------- |
+| `STAGING_TOKEN` | — | Auth token interpolated into `${STAGING_TOKEN}` in your config |
+| `PROD_TOKEN` | — | Auth token interpolated into `${PROD_TOKEN}` in your config |
+| `APIDRIFT_TIMEOUT_MS` | `10000` | HTTP request timeout in milliseconds. Increase for slow APIs. |
+
+**Bash / macOS / Linux:**
+```bash
+export APIDRIFT_TIMEOUT_MS=30000
+apidrift snapshot --tag v1.0 --env staging
+```
+
+**PowerShell (Windows):**
+```powershell
+$env:APIDRIFT_TIMEOUT_MS = "30000"
+apidrift snapshot --tag v1.0 --env staging
+```
+
+---
+
+## Troubleshooting
+
+### Requests time out on slow APIs
+
+If you see `ECONNABORTED` or `ETIMEDOUT` errors, your API is responding slower than the default 10-second timeout. Set `APIDRIFT_TIMEOUT_MS` to a larger value:
+
+```bash
+APIDRIFT_TIMEOUT_MS=60000 apidrift snapshot --tag v1.0 --env staging
+```
+
+### `Authorization` header shows `Bearer ` (empty token)
+
+This means your `${STAGING_TOKEN}` or `${PROD_TOKEN}` env var is not set. Verify:
+
+```bash
+# Bash / macOS / Linux
+echo $STAGING_TOKEN
+
+# PowerShell (Windows)
+echo $env:STAGING_TOKEN
+```
+
+If empty, create a `.env` file in your project directory:
+
+```bash
+STAGING_TOKEN=your_actual_token_here
+PROD_TOKEN=your_actual_token_here
+```
+
+Make sure `.env` is listed in your `.gitignore` so tokens are never committed.
+
 ---
 
 ## License
