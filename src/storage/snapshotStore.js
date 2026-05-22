@@ -61,6 +61,6 @@ export function listSnapshots() {
   return fs
     .readdirSync(SNAP_DIR)
     .filter((f) => f.endsWith(".json"))
-    .map((f) => f.replace(".json", ""))
+    .map((f) => f.replace(/\.json$/, ""))
     .sort();
 }
