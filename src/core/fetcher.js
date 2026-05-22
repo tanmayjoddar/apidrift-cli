@@ -17,7 +17,7 @@ const TIMEOUT_MS = (() => {
   const raw = process.env.APIDRIFT_TIMEOUT_MS;
   if (!raw) return DEFAULT_TIMEOUT_MS;
   const parsed = Number(raw);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_TIMEOUT_MS;
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : DEFAULT_TIMEOUT_MS;
 })();
 
 let didWarnEmptyAuth = false;

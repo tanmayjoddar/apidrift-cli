@@ -37,7 +37,7 @@ export async function runInit() {
       console.log(`     ${chalk.gray("STAGING_TOKEN=your_token_here")}`);
       console.log(`     ${chalk.gray("PROD_TOKEN=your_token_here")}`);
       console.log(
-        `  2. Add ${chalk.cyan(".env")} to your ${chalk.cyan(".gitignore")} to keep tokens out of git`
+        `  2. Add ${chalk.cyan(".env")} to your ${chalk.cyan(".gitignore")} to keep tokens out of Git`
       );
       console.log(
         `  3. Run: ${chalk.cyan("apidrift snapshot --tag v1.0 --env staging")}`
