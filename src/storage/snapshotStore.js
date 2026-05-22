@@ -25,7 +25,7 @@ if (!fs.existsSync(SNAP_DIR)) fs.mkdirSync(SNAP_DIR, { recursive: true });
  */
 export function sanitizeTag(tag) {
   // Replace every character that is NOT in the safe set with '_'
-  const sanitized = String(tag)
+  let sanitized = String(tag)
     .replace(/[^A-Za-z0-9._-]/g, "_")
     // Collapse consecutive underscores for readability (optional, keeps names clean)
     .replace(/_+/g, "_")
@@ -37,12 +37,32 @@ export function sanitizeTag(tag) {
       `Invalid snapshot tag "${tag}": tag must contain at least one alphanumeric character.`
     );
   }
+
+  // Windows reserved device names check: CON, PRN, AUX, NUL, COM1-9, LPT1-9
+  if (/^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i.test(sanitized)) {
+    sanitized = `_${sanitized}`;
+  }
+
   return sanitized;
 }
 
 export function saveSnapshot(tag, data) {
   const safe = sanitizeTag(tag);
   const file = path.join(SNAP_DIR, `${safe}.json`);
+  if (fs.existsSync(file)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(file, "utf-8"));
+      if (existing && existing.tag !== tag) {
+        throw new Error(
+          `Snapshot file collision: The file for tag "${tag}" already exists and contains a different tag "${existing.tag}".`
+        );
+      }
+    } catch (err) {
+      if (err.message.includes("Snapshot file collision")) {
+        throw err;
+      }
+    }
+  }
   fs.writeFileSync(file, JSON.stringify(data, null, 2));
   return file;
 }
