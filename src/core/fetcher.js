@@ -7,7 +7,19 @@ const RETRY_DEFAULTS = {
   maxDelay: 8000,
 };
 
+const DEFAULT_TIMEOUT_MS = 10000;
+
 let didWarnEmptyAuth = false;
+
+export function getRequestTimeoutMs() {
+  const rawTimeout = process.env.APIDRIFT_TIMEOUT_MS;
+  if (!rawTimeout) return DEFAULT_TIMEOUT_MS;
+
+  const timeout = Number(rawTimeout);
+  if (!Number.isFinite(timeout) || timeout <= 0) return DEFAULT_TIMEOUT_MS;
+
+  return timeout;
+}
 
 function isRetryable(err) {
   if (!err) return false;
@@ -29,7 +41,7 @@ async function fetchWithRetry(
   config = RETRY_DEFAULTS,
 ) {
   try {
-    return await axios({ ...options, url, timeout: 10000 });
+    return await axios({ ...options, url, timeout: getRequestTimeoutMs() });
   } catch (err) {
     if (attempt < config.retries && isRetryable(err)) {
       const delay = Math.min(

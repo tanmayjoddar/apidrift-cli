@@ -135,6 +135,11 @@ PROD_TOKEN=your_token_here
 
 - Add `.env` to `.gitignore`.
 - If your `Authorization` header resolves empty (e.g. token missing), apidrift prints a warning before making requests.
+- Set `APIDRIFT_TIMEOUT_MS` to customize the HTTP request timeout. The default is `10000` ms, and invalid values fall back to the default.
+
+```bash
+APIDRIFT_TIMEOUT_MS=30000 apidrift snapshot --tag v1.0 --env staging
+```
 
 ---
 
