@@ -28,11 +28,11 @@ export async function runInit() {
       initial: false,
     });
     if (!overwrite) {
-      console.log(chalk.yellow("✖ Keeping existing apidrift.config.json"));
+      console.log(chalk.yellow("ℹ Keeping existing apidrift.config.json"));
       console.log("");
       console.log("  Your current config was not modified. Next steps:");
       console.log(
-        `  1. Make sure you have a ${chalk.cyan(".env")} file with your tokens:`
+        `  1. Make sure you have a ${chalk.cyan(".env")} file or environment variables set for your tokens:`
       );
       console.log(`     ${chalk.gray("STAGING_TOKEN=your_token_here")}`);
       console.log(`     ${chalk.gray("PROD_TOKEN=your_token_here")}`);
